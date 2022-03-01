@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'org.ubb'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    implementation("com.google.guava:guava:31.1-jre")
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
+}
+
+application {
+    mainClass = 'ComputerShopMain'
+}
+
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    manifest {
+        attributes('Main-Class' : 'ComputerShopMain')
+    }
+    from {
+        configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
